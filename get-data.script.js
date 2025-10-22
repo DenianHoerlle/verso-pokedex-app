@@ -10,8 +10,10 @@ async function generateData() {
     promises.push(
       fetch(`https://pokeapi.co/api/v2/pokemon/${currentPokePosition}`).then(
         async data => {
-          const { name, types, sprites, stats, abilities } = await data.json();
+          const { name, types, sprites, stats, abilities, id } =
+            await data.json();
           return {
+            id,
             name,
             abilities: abilities.map(({ ability }) => ability.name),
             types: types.map(({ type }) => type.name),
