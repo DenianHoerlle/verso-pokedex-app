@@ -27,12 +27,12 @@ export async function GET(request: NextRequest) {
     );
 
     return Response.json({
-      data: reducedData,
+      pokemonList: reducedData,
       lastId: reducedData[reducedData.length - 1].id,
     });
   }
 
   return Response.json({
-    data: pokemonData.slice(firstPosition, lastPosition),
+    pokemonList: pokemonData.slice(firstPosition, lastPosition),
   });
 }
