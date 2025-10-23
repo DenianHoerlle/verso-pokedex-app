@@ -13,18 +13,30 @@ export default function PokemonList() {
     pageSize: 10,
   });
 
+  const renderPaginationButton = (text: string, onClick: () => void) => {
+    return (
+      <button
+        onClick={onClick}
+        className="cursor-pointer rounded-md border border-black px-2 py-0.5 uppercase transition hover:bg-black hover:text-white"
+      >
+        {text}
+      </button>
+    );
+  };
+
   return (
-    <div className="grid grid-cols-1 place-items-center gap-10 px-10 py-4 md:grid-cols-3 lg:grid-cols-4">
-      {data?.pokemonList?.map(pokemon => (
-        <PokemonCard pokemon={pokemon} />
-      ))}
-      <div className="flex max-w-lg gap-6">
-        <button
-          onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
-        >
-          prev
-        </button>
-        <button onClick={() => setCurrentPage(currentPage + 1)}>next</button>
+    <div className="mx-auto mb-8 w-11/12 max-w-5xl rounded-2xl bg-white 6xl:w-full">
+      <div className="grid grid-cols-1 place-items-center gap-10 p-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {data?.pokemonList?.map(pokemon => (
+          <PokemonCard key={pokemon.name} pokemon={pokemon} />
+        ))}
+      </div>
+      <div className="flex justify-center gap-6 py-2">
+        {renderPaginationButton(
+          "prev",
+          () => currentPage > 1 && setCurrentPage(currentPage - 1),
+        )}
+        {renderPaginationButton("next", () => setCurrentPage(currentPage + 1))}
       </div>
     </div>
   );

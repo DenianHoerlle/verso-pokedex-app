@@ -11,10 +11,16 @@ const PokemonCard = ({ pokemon }: PokemonCardType) => {
   return (
     <div
       key={name}
-      className="flex flex-col items-center rounded-2xl shadow-(--card-shadow)"
+      className="flex cursor-pointer flex-col items-center overflow-hidden rounded-2xl shadow-(--card-shadow) transition hover:scale-110"
     >
       <div className="bg-gray-100">
-        <Image src={image} width={250} height={250} alt={name} />
+        <Image
+          className="p-4"
+          src={image}
+          width={250}
+          height={250}
+          alt={name}
+        />
       </div>
       <div className="flex flex-col gap-2 py-3 text-center">
         <span className="text-xl capitalize">{name}</span>

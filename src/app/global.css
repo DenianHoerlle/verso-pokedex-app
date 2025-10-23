@@ -23,4 +23,7 @@
 
   /* SHADOW */
   --card-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+
+  /* BREAKPOINTS */
+  --breakpoint-6xl: 72rem;
 }
