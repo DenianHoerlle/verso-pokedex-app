@@ -10,7 +10,25 @@ type GetPokemonsParams = {
   currentPage?: number;
   pageSize?: number;
   searchText?: string;
-  types?: string;
+  types?: PokemonTypes[];
+};
+
+const buildQuery = ({
+  currentPage,
+  pageSize,
+  searchText,
+  types,
+}: GetPokemonsParams) => {
+  const params = [];
+
+  if (currentPage) params.push(`currentPage=${currentPage}`);
+  if (pageSize) params.push(`pageSize=${pageSize}`);
+  if (searchText) params.push(`searchText=${searchText}`);
+  if (types?.length) params.push(`types=${types}`);
+
+  if (!params.length) return "";
+
+  return ["?", ...params].join("&");
 };
 
 export const pokemonApi = createApi({
@@ -20,8 +38,7 @@ export const pokemonApi = createApi({
   }),
   endpoints: builder => ({
     getPokemons: builder.query<GetPokemonsResult, GetPokemonsParams>({
-      query: ({ currentPage, pageSize, searchText, types }) =>
-        `?currentPage=${currentPage || 1}&pageSize=${pageSize || 10}&searchText=${searchText || ""}&types=${types || ""}`,
+      query: buildQuery,
     }),
   }),
 });

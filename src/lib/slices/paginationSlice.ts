@@ -47,7 +47,9 @@ export const paginationSlice = createSlice({
     },
     removeTypeFilter(state, action: PayloadAction<TypeFilterActionType>) {
       // Loose string comparison
-      state.typeFilter.filter(type => type == action.payload.type);
+      state.typeFilter = state.typeFilter.filter(
+        type => type != action.payload.type,
+      );
     },
     setPokemonAmount(state, action: PayloadAction<SetPokemonAmount>) {
       state.pokemonAmount = action.payload.pokemonAmount;

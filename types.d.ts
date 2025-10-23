@@ -26,3 +26,8 @@ type PokemonTypes =
   | "dark"
   | "steel"
   | "fairy";
+
+declare module "pokemon-data" {
+  export const pokemonList: Pokemon[];
+  export const count: number;
+}
