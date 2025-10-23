@@ -34,5 +34,6 @@ export async function GET(request: NextRequest) {
 
   return Response.json({
     pokemonList: pokemonData.slice(firstPosition, lastPosition),
+    count: pokemonData.length,
   });
 }

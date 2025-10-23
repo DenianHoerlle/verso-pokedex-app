@@ -2,6 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type GetPokemonsResult = {
   pokemonList: Pokemon[];
+  lastId?: number;
+  count?: number;
 };
 
 type GetPokemonsParams = {
@@ -24,4 +26,4 @@ export const pokemonApi = createApi({
   }),
 });
 
-export const { useGetPokemonsQuery } = pokemonApi;
+export const { useGetPokemonsQuery, useLazyGetPokemonsQuery } = pokemonApi;

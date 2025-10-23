@@ -1,42 +1,40 @@
 "use client";
-import { useState } from "react";
+import { useEffect } from "react";
 
 import { useGetPokemonsQuery } from "@/lib/slices/pokemonSlice";
 
+import { setPokemonAmount } from "@/lib/slices/paginationSlice";
+import { RootStateType } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
 import PokemonCard from "./components/card";
+import Pagination from "./components/pagination";
 
 export default function PokemonList() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
+  const { currentPage, pageSize } = useSelector(
+    (state: RootStateType) => state.pagination,
+  );
 
   const { data } = useGetPokemonsQuery({
     currentPage,
-    pageSize: 10,
+    pageSize,
   });
 
-  const renderPaginationButton = (text: string, onClick: () => void) => {
-    return (
-      <button
-        onClick={onClick}
-        className="cursor-pointer rounded-md border border-black px-2 py-0.5 uppercase transition hover:bg-black hover:text-white"
-      >
-        {text}
-      </button>
-    );
-  };
+  useEffect(() => {
+    if (!data?.count) return;
+
+    dispatch(setPokemonAmount({ pokemonAmount: data.count }));
+  }, [data?.count]);
 
   return (
-    <div className="mx-auto mb-8 w-11/12 max-w-5xl rounded-2xl bg-white 6xl:w-full">
-      <div className="grid grid-cols-1 place-items-center gap-10 p-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="mx-auto mb-8 w-11/12 max-w-5xl rounded-2xl bg-white p-10 6xl:w-full">
+      <div className="grid grid-cols-1 place-items-center gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {data?.pokemonList?.map(pokemon => (
           <PokemonCard key={pokemon.name} pokemon={pokemon} />
         ))}
       </div>
-      <div className="flex justify-center gap-6 py-2">
-        {renderPaginationButton(
-          "prev",
-          () => currentPage > 1 && setCurrentPage(currentPage - 1),
-        )}
-        {renderPaginationButton("next", () => setCurrentPage(currentPage + 1))}
+      <div className="mt-7 flex justify-center gap-6">
+        <Pagination />
       </div>
     </div>
   );
