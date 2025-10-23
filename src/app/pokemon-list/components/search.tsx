@@ -68,8 +68,6 @@ const Search = () => {
     dispatch(addTypeFilter({ type }));
   };
 
-  console.log(selectedTypes, selectedTypes.includes("ghost"));
-
   const getButtonClassNames = (type: PokemonTypes) =>
     selectedTypes.includes(type) || !selectedTypes.length
       ? "opacity-100"

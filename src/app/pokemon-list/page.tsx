@@ -15,7 +15,7 @@ export default function PokemonList() {
   const { currentPage, pageSize, searchText, typeFilter, pokemonAmount } =
     useSelector((state: RootStateType) => state.pagination);
 
-  const { data } = useGetPokemonsQuery({
+  const { data, isFetching } = useGetPokemonsQuery({
     currentPage,
     pageSize,
     searchText,
@@ -29,13 +29,25 @@ export default function PokemonList() {
     dispatch(setPokemonAmount({ pokemonAmount: data.count }));
   }, [data?.count]);
 
+  const renderPokemonList = () => {
+    if (isFetching)
+      return Array.from({ length: 12 }).map((_, index) => (
+        <div
+          key={index}
+          className="flex h-[250] w-full flex-1 animate-pulse rounded-2xl bg-gray-200"
+        />
+      ));
+
+    return data?.pokemonList?.map(pokemon => (
+      <PokemonCard key={pokemon.name} pokemon={pokemon} />
+    ));
+  };
+
   return (
     <div className="mx-auto mb-8 w-11/12 max-w-5xl rounded-2xl bg-white p-10 6xl:w-full">
       <Search />
       <div className="grid grid-cols-1 place-items-center gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {data?.pokemonList?.map(pokemon => (
-          <PokemonCard key={pokemon.name} pokemon={pokemon} />
-        ))}
+        {renderPokemonList()}
       </div>
       <div className="mt-7 flex justify-center gap-6">
         <Pagination />
