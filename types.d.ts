@@ -2,7 +2,27 @@ type Pokemon = {
   id: number;
   name: string;
   abilities: string[];
-  types: string[];
+  types: PokemonTypes[];
   image: string;
   stats: { name: string; value: number }[];
 };
+
+type PokemonTypes =
+  | "normal"
+  | "fire"
+  | "water"
+  | "electric"
+  | "grass"
+  | "ice"
+  | "fighting"
+  | "poison"
+  | "ground"
+  | "flying"
+  | "psychic"
+  | "bug"
+  | "rock"
+  | "ghost"
+  | "dragon"
+  | "dark"
+  | "steel"
+  | "fairy";
