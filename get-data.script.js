@@ -32,7 +32,7 @@ async function generateData() {
 
   const allPokemonData = await Promise.all(promises);
 
-  let jsonData = allPokemonData;
+  let jsonData = { pokemonList: allPokemonData, count: allPokemonData.length };
 
   fs.writeFile("data.json", JSON.stringify(jsonData), function (err) {
     if (err) console.log("error", err);

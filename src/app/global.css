@@ -2,6 +2,11 @@
 
 @theme {
   /* COLORS */
+  --color-poke-primary: #ffcb05;
+  --color-poke-primary-dark: #c7a008;
+  --color-poke-secondary: #3466af;
+  --color-poke-secondary-dark: #1d2c5e;
+
   --color-normal: #a8a77a;
   --color-fire: #ee8130;
   --color-water: #6390f0;
@@ -21,6 +26,15 @@
   --color-steel: #b7b7ce;
   --color-fairy: #d685ad;
 
+  --color-black-transparent: #000000cc;
+
   /* SHADOW */
   --card-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+  --input-shadow-focus: 0px 0px 5px 0px var(--color-poke-secondary);
+
+  /* BREAKPOINTS */
+  --breakpoint-6xl: 72rem;
+
+  /* TRANSFORM */
+  --center-absolute: translate(-50%, -50%);
 }

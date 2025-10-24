@@ -1,6 +1,8 @@
 import { NextRequest } from "next/server";
 import pokemonData from "pokemon-data";
 
+const { pokemonList, count } = pokemonData;
+
 export async function GET(request: NextRequest) {
   const currentPage =
     parseInt(request?.nextUrl?.searchParams.get("currentPage") || "") || 1;
@@ -8,31 +10,49 @@ export async function GET(request: NextRequest) {
     parseInt(request?.nextUrl?.searchParams.get("pageSize") || "") || 10;
 
   const textFilter = request?.nextUrl?.searchParams.get("searchText");
-  const typeFilter = request?.nextUrl?.searchParams.get("types");
+  const typeFilter = request?.nextUrl?.searchParams
+    .get("types")
+    ?.split(",") as PokemonTypes[];
 
   const firstPosition = (currentPage - 1) * pageSize;
   const lastPosition = firstPosition + pageSize;
 
-  // TODO add type filter
-  if (textFilter) {
-    const initialData: Pokemon[] = [];
+  if (textFilter || typeFilter) {
+    const matchesTypes = (pokemon: Pokemon) => {
+      if (!typeFilter.length) return true;
 
-    const reducedData: Pokemon[] = pokemonData.reduce(
-      (acc: Pokemon[], currentValue: Pokemon) => {
-        if (currentValue.name.includes(textFilter))
-          return [...acc, currentValue];
-        return acc;
-      },
-      initialData,
-    );
+      return (
+        pokemon.types.findIndex(
+          type => type === typeFilter[0] || type === typeFilter[1],
+        ) >= 0
+      );
+    };
+
+    const matchesText = (pokemon: Pokemon) => {
+      if (!textFilter) return true;
+
+      return !!pokemon.name.includes(textFilter);
+    };
+
+    const filteredPokemonList: Pokemon[] = [];
+
+    for (const pokemon of pokemonList) {
+      if (!matchesTypes(pokemon)) continue;
+
+      if (!matchesText(pokemon)) continue;
+
+      filteredPokemonList.push(pokemon);
+
+      if (filteredPokemonList.length >= pageSize) break;
+    }
 
     return Response.json({
-      pokemonList: reducedData,
-      lastId: reducedData[reducedData.length - 1].id,
+      pokemonList: filteredPokemonList,
     });
   }
 
   return Response.json({
-    pokemonList: pokemonData.slice(firstPosition, lastPosition),
+    pokemonList: pokemonList.slice(firstPosition, lastPosition),
+    count,
   });
 }

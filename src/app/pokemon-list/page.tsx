@@ -1,31 +1,59 @@
 "use client";
-import { useState } from "react";
+import { useEffect } from "react";
 
 import { useGetPokemonsQuery } from "@/lib/slices/pokemonSlice";
 
-import PokemonCard from "./components/card";
+import { RootStateType } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
+
+import { setPokemonAmount } from "@/lib/slices/paginationSlice";
+import { Modal, Pagination, PokemonCard, Search } from "./components/";
 
 export default function PokemonList() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
+  const { currentPage, pageSize, searchText, typeFilter, pokemonAmount } =
+    useSelector((state: RootStateType) => state.pagination);
 
-  const { data } = useGetPokemonsQuery({
+  const { data, isFetching } = useGetPokemonsQuery({
     currentPage,
-    pageSize: 10,
+    pageSize,
+    searchText,
+    types: typeFilter,
   });
 
+  useEffect(() => {
+    // Saves pokemon amount for the first request only
+    if (!data?.count || pokemonAmount) return;
+
+    dispatch(setPokemonAmount({ pokemonAmount: data.count }));
+  }, [data?.count]);
+
+  const renderPokemonList = () => {
+    if (isFetching)
+      return Array.from({ length: 12 }).map((_, index) => (
+        <div
+          key={index}
+          className="flex h-[250] w-full flex-1 animate-pulse rounded-2xl bg-gray-200"
+        />
+      ));
+
+    return data?.pokemonList?.map(pokemon => (
+      <PokemonCard key={pokemon.name} pokemon={pokemon} />
+    ));
+  };
+
   return (
-    <div className="grid grid-cols-1 place-items-center gap-10 px-10 py-4 md:grid-cols-3 lg:grid-cols-4">
-      {data?.pokemonList?.map(pokemon => (
-        <PokemonCard pokemon={pokemon} />
-      ))}
-      <div className="flex max-w-lg gap-6">
-        <button
-          onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
-        >
-          prev
-        </button>
-        <button onClick={() => setCurrentPage(currentPage + 1)}>next</button>
+    <>
+      <div className="mx-auto mb-8 w-11/12 max-w-5xl rounded-2xl bg-white p-10 6xl:w-full">
+        <Search />
+        <div className="grid grid-cols-1 place-items-center gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {renderPokemonList()}
+        </div>
+        <div className="mt-7 flex justify-center gap-6">
+          <Pagination />
+        </div>
       </div>
-    </div>
+      <Modal />
+    </>
   );
 }

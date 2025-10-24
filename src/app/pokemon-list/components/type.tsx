@@ -25,7 +25,9 @@ type TypeType = {
 
 const Type = ({ type }: TypeType) => {
   return (
-    <span className={`rounded-md px-2 uppercase ${typeColors[type]}`}>
+    <span
+      className={`rounded-md px-2 text-white uppercase ${typeColors[type]}`}
+    >
       {type}
     </span>
   );
