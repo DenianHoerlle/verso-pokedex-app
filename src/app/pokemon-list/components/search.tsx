@@ -68,11 +68,11 @@ const Search = () => {
     dispatch(addTypeFilter({ type }));
   };
 
-  const getButtonClassNames = (type: PokemonTypes) =>
-    selectedTypes.includes(type) || !selectedTypes.length
-      ? "opacity-100"
-      : "opacity-50";
-
+  const getButtonClassNames = (type: PokemonTypes) => {
+    if (!selectedTypes.length) return "opacity-100";
+    if (selectedTypes.includes(type)) return "opacity-100 scale-105";
+    return "opacity-50";
+  };
   return (
     <div className="mb-10">
       <input

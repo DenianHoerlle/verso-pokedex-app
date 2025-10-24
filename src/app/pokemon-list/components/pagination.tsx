@@ -46,9 +46,28 @@ const Pagination = () => {
   const renderNumberedPages = () => {
     if (!numberOfPages) return null;
 
-    return Array.from({ length: numberOfPages }).map((_, index) =>
-      renderPaginationButton(`${index + 1}`, () => handlePageChange(index + 1)),
-    );
+    let initialPosition = currentPage - 1;
+    let lastPosition = currentPage + 1;
+
+    if (initialPosition <= 0) {
+      initialPosition = 1;
+      lastPosition += 1;
+    }
+
+    if (lastPosition > numberOfPages) {
+      initialPosition -= 1;
+      lastPosition = numberOfPages;
+    }
+
+    const paginationButtons = [];
+
+    for (let i = initialPosition; i <= lastPosition; i++) {
+      paginationButtons.push(
+        renderPaginationButton(`${i}`, () => handlePageChange(i)),
+      );
+    }
+
+    return paginationButtons;
   };
 
   return (

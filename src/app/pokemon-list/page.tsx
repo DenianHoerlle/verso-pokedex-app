@@ -3,10 +3,10 @@ import { useEffect } from "react";
 
 import { useGetPokemonsQuery } from "@/lib/slices/pokemonSlice";
 
-import { setSelectedPokemon } from "@/lib/slices/paginationSlice";
 import { RootStateType } from "@/lib/store";
 import { useDispatch, useSelector } from "react-redux";
 
+import { setPokemonAmount } from "@/lib/slices/paginationSlice";
 import { Modal, Pagination, PokemonCard, Search } from "./components/";
 
 export default function PokemonList() {
@@ -25,7 +25,7 @@ export default function PokemonList() {
     // Saves pokemon amount for the first request only
     if (!data?.count || pokemonAmount) return;
 
-    dispatch(setSelectedPokemon({ selectedPokemon: data.pokemonList[0] }));
+    dispatch(setPokemonAmount({ pokemonAmount: data.count }));
   }, [data?.count]);
 
   const renderPokemonList = () => {

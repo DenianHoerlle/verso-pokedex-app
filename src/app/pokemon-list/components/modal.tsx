@@ -73,7 +73,7 @@ const Modal = () => {
   return (
     <div
       onClick={handleCloseModal}
-      className="fixed top-1/2 left-1/2 flex h-full w-full transform-(--center-absolute) cursor-pointer items-center justify-center bg-black-transparent"
+      className="fixed top-0 left-0 flex h-screen w-screen cursor-pointer items-center justify-center bg-black-transparent"
     >
       <div
         className="flex h-4/5 w-full cursor-auto flex-col bg-white md:max-w-6xl md:flex-row"
