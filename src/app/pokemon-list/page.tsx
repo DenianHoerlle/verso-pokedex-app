@@ -3,12 +3,14 @@ import { useEffect } from "react";
 
 import { useGetPokemonsQuery } from "@/lib/slices/pokemonSlice";
 
-import { setPokemonAmount } from "@/lib/slices/paginationSlice";
+import {
+  setPokemonAmount,
+  setSelectedPokemon,
+} from "@/lib/slices/paginationSlice";
 import { RootStateType } from "@/lib/store";
 import { useDispatch, useSelector } from "react-redux";
-import PokemonCard from "./components/card";
-import Pagination from "./components/pagination";
-import Search from "./components/search";
+
+import { Modal, Pagination, PokemonCard, Search } from "./components/";
 
 export default function PokemonList() {
   const dispatch = useDispatch();
@@ -27,6 +29,7 @@ export default function PokemonList() {
     if (!data?.count || pokemonAmount) return;
 
     dispatch(setPokemonAmount({ pokemonAmount: data.count }));
+    dispatch(setSelectedPokemon({ selectedPokemon: data.pokemonList[0] }));
   }, [data?.count]);
 
   const renderPokemonList = () => {
@@ -44,14 +47,17 @@ export default function PokemonList() {
   };
 
   return (
-    <div className="mx-auto mb-8 w-11/12 max-w-5xl rounded-2xl bg-white p-10 6xl:w-full">
-      <Search />
-      <div className="grid grid-cols-1 place-items-center gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {renderPokemonList()}
+    <>
+      <div className="mx-auto mb-8 w-11/12 max-w-5xl rounded-2xl bg-white p-10 6xl:w-full">
+        <Search />
+        <div className="grid grid-cols-1 place-items-center gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {renderPokemonList()}
+        </div>
+        <div className="mt-7 flex justify-center gap-6">
+          <Pagination />
+        </div>
       </div>
-      <div className="mt-7 flex justify-center gap-6">
-        <Pagination />
-      </div>
-    </div>
+      <Modal />
+    </>
   );
 }

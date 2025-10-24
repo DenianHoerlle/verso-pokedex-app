@@ -26,10 +26,15 @@
   --color-steel: #b7b7ce;
   --color-fairy: #d685ad;
 
+  --color-black-transparent: #ffffffcc;
+
   /* SHADOW */
   --card-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
   --input-shadow-focus: 0px 0px 5px 0px var(--color-poke-secondary);
 
   /* BREAKPOINTS */
   --breakpoint-6xl: 72rem;
+
+  /* TRANSFORM */
+  --center-absolute: translate(-50%, -50%);
 }

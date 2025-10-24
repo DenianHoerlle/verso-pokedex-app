@@ -1,4 +1,8 @@
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+
+import { setSelectedPokemon } from "@/lib/slices/paginationSlice";
+
 import Type from "./type";
 
 type PokemonCardType = {
@@ -6,11 +10,17 @@ type PokemonCardType = {
 };
 
 const PokemonCard = ({ pokemon }: PokemonCardType) => {
+  const dispatch = useDispatch();
+
   const { image, name, types } = pokemon;
+
+  const handleClickCard = () =>
+    dispatch(setSelectedPokemon({ selectedPokemon: pokemon }));
 
   return (
     <div
       key={name}
+      onClick={handleClickCard}
       className="flex cursor-pointer flex-col items-center overflow-hidden rounded-2xl shadow-(--card-shadow) transition hover:scale-110"
     >
       <div className="bg-gray-100">

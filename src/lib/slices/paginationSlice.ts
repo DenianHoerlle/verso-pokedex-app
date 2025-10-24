@@ -12,8 +12,12 @@ type TypeFilterActionType = {
   type: PokemonTypes;
 };
 
-type SetPokemonAmount = {
+type SetPokemonAmountType = {
   pokemonAmount: number;
+};
+
+type SetSelectedPokeonType = {
+  selectedPokemon: Pokemon | null;
 };
 
 export type PaginationSliceStateType = {
@@ -22,6 +26,7 @@ export type PaginationSliceStateType = {
   searchText: string;
   typeFilter: PokemonTypes[];
   pokemonAmount: number | null;
+  selectedPokemon: Pokemon | null;
 };
 
 const initialState: PaginationSliceStateType = {
@@ -30,6 +35,7 @@ const initialState: PaginationSliceStateType = {
   pokemonAmount: null,
   searchText: "",
   typeFilter: [],
+  selectedPokemon: null,
 };
 
 export const paginationSlice = createSlice({
@@ -51,8 +57,11 @@ export const paginationSlice = createSlice({
         type => type != action.payload.type,
       );
     },
-    setPokemonAmount(state, action: PayloadAction<SetPokemonAmount>) {
+    setPokemonAmount(state, action: PayloadAction<SetPokemonAmountType>) {
       state.pokemonAmount = action.payload.pokemonAmount;
+    },
+    setSelectedPokemon(state, action: PayloadAction<SetSelectedPokeonType>) {
+      state.selectedPokemon = action.payload.selectedPokemon;
     },
   },
 });
@@ -63,4 +72,5 @@ export const {
   setCurrentPage,
   setPokemonAmount,
   setSearchText,
+  setSelectedPokemon,
 } = paginationSlice.actions;
